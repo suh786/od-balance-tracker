@@ -1,0 +1,460 @@
+:root {
+  --bg: #1a1a2e;
+  --bg-card: #16213e;
+  --bg-surface: #0f3460;
+  --text: #eaeaea;
+  --text-muted: #a0a0b0;
+  --credit: #00c853;
+  --debit: #ff5252;
+  --accent: #e94560;
+  --radius: 12px;
+  --bar-height: 56px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  padding-bottom: 80px;
+}
+
+/* App Bar */
+.app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg);
+  padding: 16px 20px;
+  height: var(--bar-height);
+  display: flex;
+  align-items: center;
+}
+
+.app-bar h1 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* Progress Bar */
+.progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--accent);
+  width: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.progress-bar.active {
+  opacity: 1;
+  width: 30%;
+  animation: progressPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes progressPulse {
+  0% { width: 10%; left: 0; }
+  50% { width: 40%; left: 30%; }
+  100% { width: 10%; left: 90%; }
+}
+
+/* Single Page Layout */
+.page {
+  padding: 8px 16px;
+}
+
+/* Balance Card */
+.balance-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.balance-label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.balance-amount {
+  display: block;
+  font-size: 32px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.balance-amount.positive { color: var(--credit); }
+.balance-amount.negative { color: var(--debit); }
+
+/* Transactions Section */
+.txn-section {
+  margin-top: 4px;
+}
+
+.txn-header {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.txn-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.txn-item {
+  display: grid;
+  grid-template-columns: 70px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--bg-card);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.txn-item:active {
+  background: var(--bg-surface);
+}
+
+.txn-date {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.txn-remark {
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.txn-amount {
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.txn-amount.positive { color: var(--credit); }
+.txn-amount.negative { color: var(--debit); }
+
+.txn-empty {
+  text-align: center;
+  color: var(--text-muted);
+  margin-top: 48px;
+  font-size: 16px;
+}
+
+/* FAB */
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: 20px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(233, 69, 96, 0.4);
+  z-index: 5;
+  transition: transform 0.15s;
+}
+
+/* Expand touch target beyond visible button */
+.fab::before {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+}
+
+.fab:active {
+  transform: scale(0.92);
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 100;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal-sheet {
+  background: var(--bg-card);
+  width: 100%;
+  max-width: 480px;
+  border-radius: 20px 20px 0 0;
+  padding: 12px 20px 32px;
+  padding-bottom: calc(32px + env(safe-area-inset-bottom));
+  animation: slideUp 0.25s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.modal-handle {
+  width: 40px;
+  height: 4px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 2px;
+  margin: 0 auto 16px;
+}
+
+.modal-sheet h2 {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+/* Form */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.form-group input[type="date"],
+.form-group input[type="number"],
+.form-group input[type="text"] {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.form-group input:focus {
+  border-color: var(--accent);
+}
+
+/* Amount Chips */
+.amount-chips {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.chip {
+  flex: 1;
+  padding: 8px 0;
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.chip:active {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Toggle Group */
+.toggle-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.toggle-btn {
+  padding: 12px;
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  background: none;
+  color: var(--text-muted);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.toggle-btn.active[data-type="debit"] {
+  border-color: var(--debit);
+  color: var(--debit);
+  background: rgba(255, 82, 82, 0.1);
+}
+
+.toggle-btn.active[data-type="credit"] {
+  border-color: var(--credit);
+  color: var(--credit);
+  background: rgba(0, 200, 83, 0.1);
+}
+
+/* Form Actions */
+.form-actions {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-primary {
+  padding: 14px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary:active {
+  opacity: 0.85;
+}
+
+.btn-secondary {
+  padding: 14px;
+  background: var(--bg);
+  color: var(--text-muted);
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-danger {
+  width: 100%;
+  padding: 14px;
+  margin-top: 12px;
+  background: none;
+  color: var(--debit);
+  border: 1px solid var(--debit);
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.btn-danger:active {
+  background: rgba(255, 82, 82, 0.1);
+}
+
+/* Auth Screen */
+.auth-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-screen.open {
+  display: flex;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 320px;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.auth-card h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.auth-card p {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  font-size: 18px;
+  text-align: center;
+  letter-spacing: 4px;
+  outline: none;
+  margin-bottom: 16px;
+  -webkit-appearance: none;
+}
+
+.auth-card input:focus {
+  border-color: var(--accent);
+}
+
+.auth-card .btn-primary {
+  width: 100%;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 90px;
+  left: 16px;
+  right: 16px;
+  background: var(--bg-surface);
+  color: var(--text);
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  z-index: 200;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.3s ease;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+

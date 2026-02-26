@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1a1a2e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>OD Balance Tracker</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- App Bar -->
+  <header class="app-bar">
+    <h1>OD Tracker</h1>
+    <div id="progress-bar" class="progress-bar"></div>
+  </header>
+
+  <!-- Single Page -->
+  <main class="page">
+    <!-- Balance Card -->
+    <div class="balance-card" id="balance-card">
+      <span class="balance-label">Current Balance</span>
+      <span id="balance-amount" class="balance-amount">--</span>
+    </div>
+
+    <!-- Transactions List -->
+    <div class="txn-section">
+      <h2 class="txn-header">Transactions</h2>
+      <div id="txn-list" class="txn-list"></div>
+      <div id="txn-empty" class="txn-empty" style="display:none">No transactions yet</div>
+    </div>
+  </main>
+
+  <!-- FAB -->
+  <button class="fab" id="btn-add" aria-label="Add transaction">+</button>
+
+  <!-- Bottom Sheet Modal for Add/Edit -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal-sheet" id="modal-sheet">
+      <div class="modal-handle"></div>
+      <h2 id="modal-title">Add Transaction</h2>
+
+      <form id="txn-form">
+        <input type="hidden" id="txn-row" value="">
+
+        <div class="form-group">
+          <label for="txn-date">Date</label>
+          <input type="date" id="txn-date" required>
+        </div>
+
+        <div class="form-group">
+          <label for="txn-amount">Amount</label>
+          <input type="number" id="txn-amount" inputmode="decimal" step="any" min="0" placeholder="0" required>
+          <div class="amount-chips">
+            <button type="button" class="chip" data-add="5000">+5K</button>
+            <button type="button" class="chip" data-add="10000">+10K</button>
+            <button type="button" class="chip" data-add="50000">+50K</button>
+            <button type="button" class="chip" data-add="100000">+1L</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Type</label>
+          <div class="toggle-group">
+            <button type="button" class="toggle-btn active" data-type="debit">Debit</button>
+            <button type="button" class="toggle-btn" data-type="credit">Credit</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="txn-remark">Remark</label>
+          <input type="text" id="txn-remark" list="remark-suggestions" placeholder="e.g. Interior payment" autocomplete="off">
+          <datalist id="remark-suggestions"></datalist>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" id="btn-save">Save</button>
+          <button type="button" class="btn-secondary" id="btn-cancel">Cancel</button>
+        </div>
+
+        <button type="button" class="btn-danger" id="btn-delete" style="display:none">Delete Transaction</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Auth Screen -->
+  <div id="auth-screen" class="auth-screen">
+    <div class="auth-card">
+      <h2>OD Tracker</h2>
+      <p>Enter your passcode to continue</p>
+      <form id="auth-form">
+        <input type="password" id="auth-passcode" placeholder="Passcode" autocomplete="off" required>
+        <button type="submit" class="btn-primary">Unlock</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
