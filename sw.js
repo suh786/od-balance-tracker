@@ -1,4 +1,4 @@
-const CACHE_NAME = 'od-tracker-v2';
+const CACHE_NAME = 'od-tracker-v3';
 const API_CACHE = 'od-api-v1';
 const STATIC_ASSETS = [
   './',
